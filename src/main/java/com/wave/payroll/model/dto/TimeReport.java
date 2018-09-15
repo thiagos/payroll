@@ -1,5 +1,7 @@
 package com.wave.payroll.model.dto;
 
+import com.opencsv.bean.CsvBindByPosition;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -7,33 +9,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "time_report_entries")
-public class TimeReportEntry implements Serializable {
+public class TimeReport implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Date date;
+
+    @CsvBindByPosition(position = 0)
+    private String date;
+
+    @CsvBindByPosition(position = 1)
     private Double hours;
+
+    @CsvBindByPosition(position = 2)
     private Long employeeId;
+
+    @CsvBindByPosition(position = 3)
     private String jobGroup;
 
-    public TimeReportEntry(Long id, Date date, Double hours, Long employeeId, String jobGroup) {
-        this.id = id;
-        this.date = date;
-        this.hours = hours;
-        this.employeeId = employeeId;
-        this.jobGroup = jobGroup;
-    }
+    public TimeReport() {}
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -59,5 +62,14 @@ public class TimeReportEntry implements Serializable {
 
     public void setJobGroup(String jobGroup) {
         this.jobGroup = jobGroup;
+    }
+
+    @Override
+    public String toString() {
+        return "id=" + id +
+                ", date=" + date +
+                ", hours=" + hours +
+                ", employeeId=" + employeeId +
+                ", jobGroup=" + jobGroup + "\n";
     }
 }
