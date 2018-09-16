@@ -1,9 +1,9 @@
 'use strict';
 
-var singleUploadForm = document.querySelector('#singleUploadForm');
-var singleFileUploadInput = document.querySelector('#singleFileUploadInput');
-var singleFileUploadError = document.querySelector('#singleFileUploadError');
-var singleFileUploadSuccess = document.querySelector('#singleFileUploadSuccess');
+var timeReportUploadForm = document.querySelector('#timeReportUploadForm');
+var timeReportUploadInput = document.querySelector('#timeReportUploadInput');
+var timeReportUploadError = document.querySelector('#timeReportUploadError');
+var timeReportUploadSuccess = document.querySelector('#timeReportUploadSuccess');
 
 
 function uploadTimeReport(file) {
@@ -22,7 +22,8 @@ function uploadTimeReport(file) {
             timeReportUploadSuccess.style.display = "block";
         } else {
             timeReportUploadSuccess.style.display = "none";
-            timeReportUploadError.innerHTML = (response && response.message) || "Some Error Occurred";
+            timeReportUploadError.innerHTML = response.message;
+            timeReportUploadError.style.display = "block";
         }
     }
 
@@ -40,8 +41,8 @@ function drawTable(data) {
 timeReportUploadForm.addEventListener('submit', function(event){
     var files = timeReportUploadInput.files;
     if(files.length === 0) {
-        singleFileUploadError.innerHTML = "Please select a file";
-        singleFileUploadError.style.display = "block";
+        timeReportUploadError.innerHTML = "Please select a file";
+        timeReportUploadError.style.display = "block";
     }
     uploadTimeReport(files[0]);
     event.preventDefault();

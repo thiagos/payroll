@@ -31,15 +31,16 @@ public class FileHandlerService {
 
     public List<TimeReport> fileToCsv(MultipartFile mpFile) throws IOException {
         File convFile = new File(mpFile.getOriginalFilename());
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(mpFile.getBytes());
+        fos.close();
 
         String lastLine = tail(convFile);
         currentReportId = new Long(lastLine.split(",")[1]);
 
         validationService.isValidReportId(currentReportId);
 
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(mpFile.getBytes());
-        fos.close();
+
 
         List<TimeReport> timeReportEntries;
         try (Reader reader = new FileReader(convFile)) {
@@ -57,7 +58,7 @@ public class FileHandlerService {
     public String tail(File file) {
         RandomAccessFile fileHandler = null;
         try {
-            fileHandler = new RandomAccessFile( file, "r" );
+            fileHandler = new RandomAccessFile(file, "r" );
             long fileLength = fileHandler.length() - 1;
             StringBuilder sb = new StringBuilder();
 
