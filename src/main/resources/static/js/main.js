@@ -1,6 +1,7 @@
 'use strict';
 
 var timeReportUploadForm = document.querySelector('#timeReportUploadForm');
+var getReportForm = document.querySelector('#getReportForm');
 var timeReportUploadInput = document.querySelector('#timeReportUploadInput');
 var timeReportUploadError = document.querySelector('#timeReportUploadError');
 var timeReportUploadSuccess = document.querySelector('#timeReportUploadSuccess');
@@ -26,8 +27,27 @@ function uploadTimeReport(file) {
             timeReportUploadError.style.display = "block";
         }
     }
-
     xhr.send(formData);
+}
+
+function getReport() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/getReport");
+
+    xhr.onload = function() {
+        console.log(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
+        if(xhr.status == 200) {
+            timeReportUploadError.style.display = "none";
+            timeReportUploadSuccess.innerHTML = "<p>Report retrieved Successfully!</p><p>Current pay report:</p>" + drawTable(response);
+            timeReportUploadSuccess.style.display = "block";
+        } else {
+            timeReportUploadSuccess.style.display = "none";
+            timeReportUploadError.innerHTML = response.message;
+            timeReportUploadError.style.display = "block";
+        }
+    }
+    xhr.send();
 }
 
 function drawTable(data) {
@@ -45,5 +65,11 @@ timeReportUploadForm.addEventListener('submit', function(event){
         timeReportUploadError.style.display = "block";
     }
     uploadTimeReport(files[0]);
+    event.preventDefault();
+}, true);
+
+getReportForm.addEventListener('submit', function(event){
+    console.log("listener trigger");
+    getReport();
     event.preventDefault();
 }, true);
