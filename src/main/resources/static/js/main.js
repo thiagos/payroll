@@ -51,7 +51,7 @@ function getReport() {
 }
 
 function drawTable(data) {
-  var html = '<table id="table"><thead><tr><th>Employee Id</th><th>Period</th><th>Amount Paid</th></tr></thead>';
+  var html = '<table id="table"><thead><tr><th>Employee Id</th><th>Pay Period</th><th>Amount Paid</th></tr></thead>';
   for (var i = 0; i < data.length; i++) {
     html += '<tr><td>' + data[i].employeeId + '</td><td>' + data[i].period + '</td><td>' + data[i].amountPaid + '</td></tr>';
   }
