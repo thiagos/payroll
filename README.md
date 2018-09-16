@@ -1,5 +1,7 @@
 # Wave Software Development Challenge
 
+_(obs: build instructions and main features found under Documentation section below)_
+
 Applicants for the [Software
 developer](https://wave.bamboohr.co.uk/jobs/view.php?id=1) role at Wave must
 complete the following challenge, and submit a solution prior to the onsite
@@ -200,6 +202,58 @@ Please modify `README.md` to add:
 1. Instructions on how to build/run your application
 1. A paragraph or two about what you are particularly proud of in your
    implementation, and why.
+   
+## Build instructions
+
+This project was built using the Java Spring Boot Framework. To run it, execute from the root folder:
+
+``mvn spring-boot:run``
+
+Or alternatively, build the project with:
+
+``mvn clean install``
+
+And execute it with: 
+
+``java -jar target/payroll-0.0.1-SNAPSHOT.jar``
+
+The application starts a webserver on `localhost:8080`, where both options are available:
+1. Upload a CSV file following the specified format, showing the current pay report after;
+1. Get the current pay report, based on previous uploaded time reports on DB.
+
+For simplicity, the application uses an in-memory H2 database, provided by Spring Boot.
+
+## Main features
+
+All input file entries are stored in DB, but would be redundant to recalculate historically during each upload of a new file,
+which would certainly slow down the application as the number of records grow.  
+The application was built to just increment the current _Amount Paid_ values (calculated on previous input uploads) 
+per combination _employeeId+PayPeriod_, based on just the new entries received in the current CSV being processed.
+
+For the pay report sorting (based on _EmployeeId_, followed by _Pay Period_), the implementation consists of:
+- The _Model_ class for _PayReport_ extending _Comparable_ Interface;
+- The method _compareTo_ is _overridden_ with the custom logic, to compare employeeId, and then compare the period if needed. 
+- A call to `Collections.sort(List<PayReport>)` then sorts a given list following this customization.
+
+## Helpers
+
+I'm not very comfortable with frontend in general, so the following websites were extremely helpful on getting this exercise
+to its current state:
+
+1.	Frontend upload file base:
+https://www.callicoder.com/spring-boot-file-upload-download-rest-api-example/
+
+2.	Convert input csv File to Objects:
+https://www.linkedin.com/pulse/spring-boot-upload-csv-file-store-records-database-garaddi/
+
+3.	Frontend print report
+https://stackoverflow.com/questions/41122990/output-json-to-html-table
+
+4.	Simple CSS for report
+http://johnsardine.com/freebies/dl-html-css/simple-little-tab/
+
+5.	Read last line to get reportId:
+https://stackoverflow.com/questions/686231/quickly-read-the-last-line-of-a-text-file/7322581#7322581
 
 ## Submission Instructions
 
