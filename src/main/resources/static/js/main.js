@@ -18,7 +18,7 @@ function uploadTimeReport(file) {
         var response = JSON.parse(xhr.responseText);
         if(xhr.status == 200) {
             timeReportUploadError.style.display = "none";
-            timeReportUploadSuccess.innerHTML = "<p>File Uploaded Successfully.</p>";
+            timeReportUploadSuccess.innerHTML = "<p>File Uploaded Successfully!</p><p>Current pay report:</p>" + drawTable(response);
             timeReportUploadSuccess.style.display = "block";
         } else {
             timeReportUploadSuccess.style.display = "none";
@@ -27,6 +27,14 @@ function uploadTimeReport(file) {
     }
 
     xhr.send(formData);
+}
+
+function drawTable(data) {
+  var html = '<table id="table"><thead><tr><th>Employee Id</th><th>Period</th><th>Amount Paid</th></tr></thead>';
+  for (var i = 0; i < data.length; i++) {
+    html += '<tr><td>' + data[i].employeeId + '</td><td>' + data[i].period + '</td><td>' + data[i].amountPaid + '</td></tr>';
+  }
+  return html + '</table>';
 }
 
 timeReportUploadForm.addEventListener('submit', function(event){
